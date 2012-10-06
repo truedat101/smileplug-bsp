@@ -1,0 +1,10 @@
+CONNECTION='ethernet'
+DESCRIPTION='SMILEplug WAN Interface'
+INTERFACE='eth0'
+IP='dhcp'
+DHCP_OPTIONS="--noarp"
+
+## for DHCPv6
+#IP6='dhcp'
+## for IPv6 autoconfiguration
+#IP6='stateless'

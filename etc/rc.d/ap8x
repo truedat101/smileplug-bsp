@@ -1,0 +1,35 @@
+#!/bin/bash
+#
+# SMILEplug Wireless
+
+. /etc/rc.conf
+. /etc/rc.d/functions
+
+case "$1" in
+    start)
+        #configure the parameters on wdev0 first
+        iwpriv wdev0 opmode 7
+        iwpriv wdev0 autochannel 0
+        iwpriv wdev0 wmm 1
+        iwpriv wdev0 htbw 0
+        iwconfig wdev0 channel 6
+        ifconfig wdev0 up
+        
+        #now configure the parameters on wdev0ap0
+        iwpriv wdev0ap0 ampdutx 1
+        iwconfig wdev0ap0 essid SMILE
+        ifconfig wdev0ap0 inet 10.1.0.1/24
+        ifconfig wdev0ap0 up
+        ;;
+    stop)
+        ifconfig wdev0ap0 down
+        ifconfig wdev0 down
+        ;;
+    restart)
+        "$0" stop
+        sleep 1
+        "$0" start
+        ;;
+    *)
+        exit_stderr "Usage: $0 {start|stop|restart}"
+esac

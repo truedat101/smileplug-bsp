@@ -1,0 +1,15 @@
+CONNECTION='ethernet'
+DESCRIPTION='SMILEplug Admin Interface'
+INTERFACE='eth1'
+IP='static'
+ADDR='10.0.0.1'
+SKIPNOCARRIER='yes'
+
+## For IPv6 autoconfiguration
+#IP6=stateless
+
+## For IPv6 static address configuration
+#IP6='static'
+#ADDR6=('1234:5678:9abc:def::1/64' '1234:3456::123/96')
+#ROUTES6=('abcd::1234')
+#GATEWAY6='1234:0:123::abcd'
