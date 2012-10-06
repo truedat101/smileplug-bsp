@@ -20,6 +20,8 @@ case "$1" in
         iwconfig wdev0ap0 essid SMILE
         ifconfig wdev0ap0 inet 10.1.0.1/24
         ifconfig wdev0ap0 up
+        iwconfig wdev0ap0 essid SMILE-`ifconfig wdev0ap0 | egrep -o '([[:xdigit:]]{2}[:]){5}[[:xdigit:]]{2}'`
+        iwconfig wdev0ap0 commit
         ;;
     stop)
         ifconfig wdev0ap0 down
