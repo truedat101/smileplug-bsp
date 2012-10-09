@@ -15,8 +15,9 @@ Package Manifest
 > pacman -S openssl gcc nodejs make
 
 NPM Modules:
-* forever (we should use this to start things)
-* forever-webui (npm package is busted, use BETA, https://github.com/FGRibreau/forever-webui ) , wget https://nodeload.github.com/FGRibreau/forever-webui/tarball/master , install dependencies, access on port 8085
+* forever (install in global)
+* forever-webui (npm package is busted, use BETA, off HEAD of https://github.com/SMILEConsortium/forever-webui.git) , wget https://nodeload.github.com/FGRibreau/forever-webui/tarball/master , install dependencies, access on port 8085
+* sm (TBD, may need this to get a decent cloud9ide install done)
 
 Open Ports
 ==========
