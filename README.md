@@ -9,12 +9,32 @@ Package Manifest
 * openssl
 * make
 * gcc
+* python(? - TBD)
+* jdk (? TBD)
 
 > pacman -S openssl gcc nodejs make
 
 NPM Modules:
+* forever (we should use this to start things)
+* forever-webui (npm package is busted, use BETA, https://github.com/FGRibreau/forever-webui ) , wget https://nodeload.github.com/FGRibreau/forever-webui/tarball/master , install dependencies, access on port 8085
 
-    console.io
+Open Ports
+==========
+* 80 (SMILE and JS.js)
+* 8085 (forever-webui)
+* 5000 (epochedu) 
+
+Python Modules:
+* curl -O http://python-distribute.org/distribute_setup.py
+* sudo python distribute_setup.py
+* sudo easy_install pip
+* sudo pip install virtualenv
+* sudo pip install virtualenvwrapper
+* tornado
+* kerberos
+
+Additional Software:
+* GateOne: https://github.com/liftoff/GateOne
 
 I've also added for testing:
 
