@@ -1,0 +1,7 @@
+#
+# Set ARGS to point to your initial Node.js app/service
+#
+# /root/spdist/GateOne/localroot/localroot/gateone/gateone.py --port=8009 --origins="https://10.0.0.16:8009"
+ARGS="--port=8009 --origins=https://10.0.0.16:8009"
+VIRTUALENV="/root/spdist/GateOne/goenv/bin/activate"
+DAEMON="/root/spdist/GateOne/localroot/localroot/gateone/gateone.py"
