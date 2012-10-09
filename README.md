@@ -9,7 +9,9 @@ Package Manifest
 * openssl
 * make
 * gcc
-* python(? - TBD)
+* python2 (? - TBD)
+* python2-distribute
+* python2-pyopenssl
 * jdk (? TBD)
 
 > pacman -S openssl gcc nodejs make
@@ -35,7 +37,12 @@ Python Modules:
 * kerberos
 
 Additional Software:
-* GateOne: https://github.com/liftoff/GateOne
+* GateOne: https://github.com/liftoff/GateOne, forked on : https://nodeload.github.com/SMILEConsortium/GateOne/tarball/master
+* virtualenv goenv
+* . ./goenv/bin/activate
+* pip install tornado
+* pip install kerberos
+
 
 I've also added for testing:
 
