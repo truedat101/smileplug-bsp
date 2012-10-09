@@ -1,0 +1,6 @@
+#
+# Set ARGS to point to your initial Node.js app/service
+#
+ARGS="/root/spdist/forever-webgui/app.js"
+# Don't run the forever-webui as a forever process, otherwise we might kill it
+DAEMON="/usr/bin/node"
