@@ -1,0 +1,43 @@
+#!/bin/sh
+#
+# Magic markers (optional - used by munin-config and some installation
+# scripts):
+#
+#%# family=auto
+#%# capabilities=autoconf suggest
+
+# You probably want to change this
+script=/etc/dhcpd.conf.d/dhcpd-pool
+
+# Autoconf option
+if [ "$1" = "autoconf" ]; then
+    if [ -x $script ]; then
+        echo yes
+        exit 0
+    else
+	echo "no ($script does not exist or not executable)"
+	exit 1
+    fi
+fi
+
+# Suggest option
+if [ "$1" = "suggest" ]; then
+    if [ -x $script ]; then
+	$script --munin --append suggest
+	RETVAL=$?
+        exit $RETVAL
+    else
+	echo "no ($script does not exist or not executable)"
+	exit 1
+    fi
+fi
+
+# Get pool id
+pool=`basename $0 | sed 's/^dhcpd-munin_//g'`
+
+# Execute script
+if [ "$1" = "config" ]; then
+    $script --munin --pool $pool --append config
+else
+    $script --munin --pool $pool
+fi
