@@ -3,8 +3,8 @@ smileplug-bsp
 
 This is a bunch of initial config.  This will include a set of configs to be applied in the BSP.
 
-Package Manifest
-================
+Pacman Package Manifest
+=======================
 * nodejs
 * openssl
 * make
@@ -13,6 +13,7 @@ Package Manifest
 * python2-distribute
 * python2-pyopenssl
 * jdk (? TBD)
+* git (for testing ... will consider leaving this in)
 
 > pacman -S openssl gcc nodejs make
 
@@ -39,7 +40,7 @@ Python Modules:
 * kerberos
 
 Additional Software:
-* GateOne: https://github.com/liftoff/GateOne, forked on : https://nodeload.github.com/SMILEConsortium/GateOne/tarball/master
+* GateOne: https://github.com/liftoff/GateOne, forked on : https://nodeload.github.com/SMILEConsortium/GateOne/tarball/master (need to evaluate this Affereo GPL)
 * virtualenv goenv
 * . ./goenv/bin/activate
 * pip install tornado
