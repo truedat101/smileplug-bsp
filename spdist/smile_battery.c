@@ -38,121 +38,193 @@ struct i2c_rdwr_ioctl_data
 			int nmsgs;
         };
 
-        int main(int argc, char** argv)
-        {
-            int fd,ret;
-            struct i2c_rdwr_ioctl_data e2prom_data;
+void
+usage(const char *prog)
+{
+    fprintf(stderr, "Usage: %s [-hjd]"
+            "   Prints out the battery status for the SMILE Plug\n"
+            "\n"
+			" -h - print this help message"
+			"\n"
+			" -j - print JSON output to stdout"
+			"\n"
+			" -d - print debug messages to stderr"
+			"\n"
+            " -h \n", prog);
+    exit(1);
+}
 
-            fd=open("/dev/i2c-0",O_RDWR);
+
+int main(int argc, char** argv)
+{
+    int fd,ret;
+    struct i2c_rdwr_ioctl_data e2prom_data;
+	int opt;
+	int jsonout = 0;
+	int debugout = 0;
+	
+	while((opt = getopt(argc, argv, "hjd")) != 1) {
+		switch(opt) {
+			case 'h':
+				usage(argv[0]);
+				break;
+			case 'j':
+				jsonout = 1;
+				break;
+			case 'd':
+				debugout = 1;
+				break;
+		}
+	}
+	
+    fd=open("/dev/i2c-0",O_RDWR);
+
+
+    if(fd<0)
+    {
+		perror("open error");
+    }
+    e2prom_data.nmsgs=2;
+
+    e2prom_data.msgs=(struct i2c_msg*)malloc(e2prom_data.nmsgs*sizeof(struct i2c_msg));
+    if(!e2prom_data.msgs)
+    {
+		perror("malloc error");
+		exit(1);
+    }
+    ioctl(fd,I2C_TIMEOUT,1);
+    ioctl(fd,I2C_RETRIES,2);
+
+	if (debugout == 1) {
+		fprintf(stderr, "test i2c\n");
+	}
+	
+    /***write data to e2prom**/
+
+    e2prom_data.nmsgs=1;
+    (e2prom_data.msgs[0]).len=2; 
+
+    (e2prom_data.msgs[0]).addr=0x0B;
+    (e2prom_data.msgs[0]).flags=0; //write
+    (e2prom_data.msgs[0]).buf=(unsigned char*)malloc(2);
+    (e2prom_data.msgs[0]).buf[0]=0x8;// e2prom 
+    (e2prom_data.msgs[0]).buf[1]=0x0;//the data to write
+	ret=ioctl(fd,I2C_RDWR,(unsigned long)&e2prom_data);
+	
+    if(ret<0)
+    {
+		perror("ioctl error1");
+    }
     
-   
-            if(fd<0)
-            {
-				perror("open error");
-            }
-            e2prom_data.nmsgs=2;
+    
+/******read voltage data from e2prom*******/
+    e2prom_data.nmsgs=2;
+	if (debugout == 1) {
+		fprintf(stderr, "test00 i2c\n");
+	}
+    (e2prom_data.msgs[0]).len=1; //e2prom 
+    (e2prom_data.msgs[0]).addr=0x0b; // e2prom
+    (e2prom_data.msgs[0]).flags=0;//write
+    (e2prom_data.msgs[0]).buf[0]=0x09; //e2prom
 
-            e2prom_data.msgs=(struct i2c_msg*)malloc(e2prom_data.nmsgs*sizeof(struct i2c_msg));
-            if(!e2prom_data.msgs)
-            {
-				perror("malloc error");
-				exit(1);
-            }
-            ioctl(fd,I2C_TIMEOUT,1);
-            ioctl(fd,I2C_RETRIES,2);
+    (e2prom_data.msgs[1]).len=2;
 
-			printf("test i2c by steven\n");
-            /***write data to e2prom**/
+	if (debugout == 1) {
+		fprintf(stderr, "test01 i2c\n");
+	}
+    (e2prom_data.msgs[1]).addr=0x0b;// e2prom
+    (e2prom_data.msgs[1]).flags=I2C_M_RD;//read
 
-            e2prom_data.nmsgs=1;
-            (e2prom_data.msgs[0]).len=2; 
+    (e2prom_data.msgs[1]).buf=(unsigned char*)malloc(2);
+    (e2prom_data.msgs[1]).buf[0]=0;
+    (e2prom_data.msgs[1]).buf[1]=0;
+	if (debugout == 1) {
+		fprintf(stderr, "test2 i2c\n");
+	}
+	ret=ioctl(fd,I2C_RDWR,(unsigned long)&e2prom_data);
+	if (debugout == 1) {
+		fprintf(stderr, "test3 i2c\n");
+	}
+    if(ret<0)
+    {
+		perror("ioctl error2");
+    }
+    
+	//
+	// JSON OPEN
+	//
+	if (jsonout == 1) {
+		printf("{");
+	}
+	if (jsonout == 0) {
+		printf("voltage buff[0]=%x\n",(e2prom_data.msgs[1]).buf[0]);
+		printf("voltage buff[1]=%x\n",(e2prom_data.msgs[1]).buf[1]);
+	} else {
+		printf("\"voltage-b0\":\"%x\"",(e2prom_data.msgs[1]).buf[0]);
+		printf(",\"voltage-b1\":\"%x\"",(e2prom_data.msgs[1]).buf[1]);
+	}
 
-            (e2prom_data.msgs[0]).addr=0x0B;
-            (e2prom_data.msgs[0]).flags=0; //write
-            (e2prom_data.msgs[0]).buf=(unsigned char*)malloc(2);
-            (e2prom_data.msgs[0]).buf[0]=0x8;// e2prom 
-            (e2prom_data.msgs[0]).buf[1]=0x0;//the data to write
-			ret=ioctl(fd,I2C_RDWR,(unsigned long)&e2prom_data);
-			
-            if(ret<0)
-            {
-				perror("ioctl error1");
-            }
-            
-            
-    /******read voltage data from e2prom*******/
-            e2prom_data.nmsgs=2;
-			printf("test00 i2c by steven\n");
-            (e2prom_data.msgs[0]).len=1; //e2prom 
-            (e2prom_data.msgs[0]).addr=0x0b; // e2prom
-            (e2prom_data.msgs[0]).flags=0;//write
-            (e2prom_data.msgs[0]).buf[0]=0x09; //e2prom
+/******read manufacture data from e2prom*******/
+    e2prom_data.nmsgs=2;
+    (e2prom_data.msgs[0]).len=1; //e2prom
+    (e2prom_data.msgs[0]).addr=0x0b; // e2prom 
+    (e2prom_data.msgs[0]).flags=0;//write
+    (e2prom_data.msgs[0]).buf[0]=0x00; //e2prom
+    (e2prom_data.msgs[1]).len=1;//
+    
+    (e2prom_data.msgs[1]).addr=0x0b;// e2prom
+    (e2prom_data.msgs[1]).flags=I2C_M_RD;//read
+    (e2prom_data.msgs[1]).buf=(unsigned char*)malloc(1);
+    (e2prom_data.msgs[1]).buf[0]=0; 
+	ret=ioctl(fd,I2C_RDWR,(unsigned long)&e2prom_data);
+    if(ret<0)
+    {
+		perror("ioctl error2");
+    }
+	
+	if (jsonout == 0) {
+		printf("manufacturer data - buff[0]=%x\n",(e2prom_data.msgs[1]).buf[0]);
+	} else {
+		printf("\"mfgdata-b0\":\"%x\"",(e2prom_data.msgs[1]).buf[0]);
+	}
+	sleep(1);
 
-            (e2prom_data.msgs[1]).len=2;
+/******read remainingcapacity data from e2prom*******/
+    e2prom_data.nmsgs=2;
+    (e2prom_data.msgs[0]).len=1; //e2prom 
+    (e2prom_data.msgs[0]).addr=0x0b; // e2prom
+    (e2prom_data.msgs[0]).flags=0;//write
+    (e2prom_data.msgs[0]).buf[0]=0x0f; //e2prom
 
-			printf("test01 i2c by steven\n");
+    (e2prom_data.msgs[1]).len=2;
+    
+    (e2prom_data.msgs[1]).addr=0x0b;// e2prom
+    (e2prom_data.msgs[1]).flags=I2C_M_RD;//read
 
-            (e2prom_data.msgs[1]).addr=0x0b;// e2prom
-            (e2prom_data.msgs[1]).flags=I2C_M_RD;//read
-
-            (e2prom_data.msgs[1]).buf=(unsigned char*)malloc(2);
-            (e2prom_data.msgs[1]).buf[0]=0;
-            (e2prom_data.msgs[1]).buf[1]=0; 
-			printf("test2 i2c by steven\n");
-			ret=ioctl(fd,I2C_RDWR,(unsigned long)&e2prom_data);
-			printf("test3 i2c by steven\n");
-            if(ret<0)
-            {
-				perror("ioctl error2");
-            }
-            printf("voltage buff[0]=%x\n",(e2prom_data.msgs[1]).buf[0]);
-            printf("voltage buff[1]=%x\n",(e2prom_data.msgs[1]).buf[1]);
-
-
-    /******read manufacture data from e2prom*******/
-            e2prom_data.nmsgs=2;
-            (e2prom_data.msgs[0]).len=1; //e2prom
-            (e2prom_data.msgs[0]).addr=0x0b; // e2prom 
-            (e2prom_data.msgs[0]).flags=0;//write
-            (e2prom_data.msgs[0]).buf[0]=0x00; //e2prom
-            (e2prom_data.msgs[1]).len=1;//
-            
-            (e2prom_data.msgs[1]).addr=0x0b;// e2prom
-            (e2prom_data.msgs[1]).flags=I2C_M_RD;//read
-            (e2prom_data.msgs[1]).buf=(unsigned char*)malloc(1);
-            (e2prom_data.msgs[1]).buf[0]=0; 
-			ret=ioctl(fd,I2C_RDWR,(unsigned long)&e2prom_data);
-            if(ret<0)
-            {
-				perror("ioctl error2");
-            }
-            printf("buff[0]=%x\n",(e2prom_data.msgs[1]).buf[0]);
-
-           sleep(1);
-
-    /******read remainingcapacity data from e2prom*******/
-            e2prom_data.nmsgs=2;
-            (e2prom_data.msgs[0]).len=1; //e2prom 
-            (e2prom_data.msgs[0]).addr=0x0b; // e2prom
-            (e2prom_data.msgs[0]).flags=0;//write
-            (e2prom_data.msgs[0]).buf[0]=0x0f; //e2prom
-
-            (e2prom_data.msgs[1]).len=2;
-            
-            (e2prom_data.msgs[1]).addr=0x0b;// e2prom
-            (e2prom_data.msgs[1]).flags=I2C_M_RD;//read
-
-            (e2prom_data.msgs[1]).buf=(unsigned char*)malloc(2);
-            (e2prom_data.msgs[1]).buf[0]=0; 
-            (e2prom_data.msgs[1]).buf[1]=0;
-			ret=ioctl(fd,I2C_RDWR,(unsigned long)&e2prom_data);
-            if(ret<0)
-            {
-				perror("ioctl error2");
-            }
-            printf("remainingcapacity buff[0]=%x\n",(e2prom_data.msgs[1]).buf[0]);
-            printf("remainingcapacity buff[1]=%x\n",(e2prom_data.msgs[1]).buf[1]);
-
-            close(fd);
-            return 0;
-        }
+    (e2prom_data.msgs[1]).buf=(unsigned char*)malloc(2);
+    (e2prom_data.msgs[1]).buf[0]=0; 
+    (e2prom_data.msgs[1]).buf[1]=0;
+	ret=ioctl(fd,I2C_RDWR,(unsigned long)&e2prom_data);
+    if(ret<0)
+    {
+		perror("ioctl error2");
+    }
+	
+	if (jsonout == 0) {
+		printf("remainingcapacity buff[0]=%x\n",(e2prom_data.msgs[1]).buf[0]);
+		printf("remainingcapacity buff[1]=%x\n",(e2prom_data.msgs[1]).buf[1]);
+	} else {
+		printf("\"remaining-b0\"=\"%x\"",(e2prom_data.msgs[1]).buf[0]);
+		printf("\"remaining-b1\"=\"%x\"",(e2prom_data.msgs[1]).buf[1]);
+	}
+	
+	//
+	// JSON CLOSE
+	//
+	if (jsonout == 1) {
+		printf("}");
+	}
+	
+    close(fd);
+    return 0;
+}
