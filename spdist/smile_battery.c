@@ -63,7 +63,7 @@ int main(int argc, char** argv)
 	int jsonout = 0;
 	int debugout = 0;
 	
-	while((opt = getopt(argc, argv, "hjd:")) != 1) {
+	while((opt = getopt(argc, argv, "hjd")) != -1) {
 		switch(opt) {
 
 			case 'j':
@@ -72,8 +72,9 @@ int main(int argc, char** argv)
 			case 'd':
 				debugout = 1;
 				break;
-			default:
 			case 'h':
+				
+			default:
 				usage(argv[0]);
 				break;
 		}
