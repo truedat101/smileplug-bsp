@@ -217,8 +217,8 @@ int main(int argc, char** argv)
 		printf("remainingcapacity buff[0]=%x\n",(e2prom_data.msgs[1]).buf[0]);
 		printf("remainingcapacity buff[1]=%x\n",(e2prom_data.msgs[1]).buf[1]);
 	} else {
-		printf(",\"remaining-b0\"=\"%x\"",(e2prom_data.msgs[1]).buf[0]);
-		printf(",\"remaining-b1\"=\"%x\"",(e2prom_data.msgs[1]).buf[1]);
+		printf(",\"remaining-b0\":\"%x\"",(e2prom_data.msgs[1]).buf[0]);
+		printf(",\"remaining-b1\":\"%x\"",(e2prom_data.msgs[1]).buf[1]);
 	}
 	
 	//
