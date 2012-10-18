@@ -588,12 +588,12 @@ int main(int argc, char** argv)
 		printf(",\"remaining-b1\":\"%x\"",(e2prom_data.msgs[1]).buf[1]);
 	}
 	
-	/******read atratetimetofull from e2prom*******/
+	/******read averagetimetofull from e2prom*******/
     e2prom_data.nmsgs=2;
     (e2prom_data.msgs[0]).len=1; //e2prom 
     (e2prom_data.msgs[0]).addr=0x0b; // e2prom
     (e2prom_data.msgs[0]).flags=0;//write
-    (e2prom_data.msgs[0]).buf[0]=0x05; //e2prom
+    (e2prom_data.msgs[0]).buf[0]=0x13; //e2prom
 
     (e2prom_data.msgs[1]).len=2;
     
@@ -610,49 +610,21 @@ int main(int argc, char** argv)
     }
 	
 	//
-	// AtRateTimeToFull
+	// AverageTimeToFull
 	// Unsigned Int, Returns the predicted remaining time to fully charge the battery at the AtRate value (ma).
 	//
 	if (jsonout == 0) {
-		printf("atratetimetofull buff[0]=%u\n",(e2prom_data.msgs[1]).buf[0]);
-		printf("atratetimetofull buff[1]=%u\n",(e2prom_data.msgs[1]).buf[1]);
+		printf("averagetimetofull buff[0]=%u\n",(e2prom_data.msgs[1]).buf[0]);
+		printf("averagetimetofull buff[1]=%u\n",(e2prom_data.msgs[1]).buf[1]);
 	} else {
-		printf(",\"atratetimetofull-b0\":\"%u\"",(e2prom_data.msgs[1]).buf[0]);
-		printf(",\"atratetimetofull-b1\":\"%u\"",(e2prom_data.msgs[1]).buf[1]);
+		printf(",\"averagetimetofull-b0\":\"%u\"",(e2prom_data.msgs[1]).buf[0]);
+		printf(",\"averagetimetofull-b1\":\"%u\"",(e2prom_data.msgs[1]).buf[1]);
+		sprintf(hv, "%x%x\n", (e2prom_data.msgs[1]).buf[1], (e2prom_data.msgs[1]).buf[0]);
+		sscanf(hv, "%x", &uintresult);
+		printf(",\"averagetimetofull\":\"%u\"", uintresult);
 	}
 	
-	/******read atratetimetoempty from e2prom*******/
-    e2prom_data.nmsgs=2;
-    (e2prom_data.msgs[0]).len=1; //e2prom 
-    (e2prom_data.msgs[0]).addr=0x0b; // e2prom
-    (e2prom_data.msgs[0]).flags=0;//write
-    (e2prom_data.msgs[0]).buf[0]=0x06; //e2prom
 
-    (e2prom_data.msgs[1]).len=2;
-    
-    (e2prom_data.msgs[1]).addr=0x0b;// e2prom
-    (e2prom_data.msgs[1]).flags=I2C_M_RD;//read
-
-    (e2prom_data.msgs[1]).buf=(unsigned char*)malloc(2);
-    (e2prom_data.msgs[1]).buf[0]=0; 
-    (e2prom_data.msgs[1]).buf[1]=0;
-	ret=ioctl(fd,I2C_RDWR,(unsigned long)&e2prom_data);
-    if(ret<0)
-    {
-		perror("ioctl error2");
-    }
-	
-	//
-	// AtRateTimeToEmpty
-	// Unsigned Int, Returns the predicted remaining time to fully charge the battery at the AtRate value (ma).
-	//
-	if (jsonout == 0) {
-		printf("atratetimetoempty buff[0]=%x\n",(e2prom_data.msgs[1]).buf[0]);
-		printf("atratetimetoempty buff[1]=%x\n",(e2prom_data.msgs[1]).buf[1]);
-	} else {
-		printf(",\"atratetimetoempty-b0\":\"%x\"",(e2prom_data.msgs[1]).buf[0]);
-		printf(",\"atratetimetoempty-b1\":\"%x\"",(e2prom_data.msgs[1]).buf[1]);
-	}
 	
 	/******read cyclecount from e2prom*******/
     e2prom_data.nmsgs=2;
