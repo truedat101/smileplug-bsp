@@ -26,6 +26,13 @@ NPM Modules:
 Scripts:
 * dhcpd-status.sh -> /root/spdist/dhcpd-pool-0.2/dhcpd-status-arch.sh
 
+General Config
+==============
+* Standard root password: root // XXX CHANGE ME
+* .bashrc in /root is used
+* set default root PATH to include ~/root/bin
+
+
 Open Ports
 ==========
 * 80 (SMILE and JS.js) - We really need to put all of this behind a reverse proxy
