@@ -9,6 +9,7 @@ Pacman Package Manifest
 * openssl
 * make
 * gcc
+* sysstat (we just use sar)
 * python2 (? - TBD)
 * python2-distribute
 * python2-pyopenssl
@@ -20,7 +21,10 @@ Pacman Package Manifest
 NPM Modules:
 * forever (install in global)
 * forever-webui (npm package is busted, use BETA, off HEAD of https://github.com/SMILEConsortium/forever-webui.git) , wget https://nodeload.github.com/FGRibreau/forever-webui/tarball/master , install dependencies, access on port 8085
-* sm (TBD, may need this to get a decent cloud9ide install done)
+* sm (XXX TBD, may need this to get a decent cloud9ide install done)
+
+Scripts:
+* dhcpd-status.sh -> /root/spdist/dhcpd-pool-0.2/dhcpd-status-arch.sh
 
 Open Ports
 ==========
