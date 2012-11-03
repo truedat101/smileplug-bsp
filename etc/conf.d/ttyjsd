@@ -1,0 +1,9 @@
+#
+# Set ARGS to point to your initial Node.js app/service
+#
+# XXX This is a real problem - the server won't find it's local paths for static content if we use the
+# full path
+# ARGS="/root/plugmin-server/plugmin-server.js"
+ARGS=""
+SERVERDIR="/root/spdist/tty.js"
+DAEMON="./bin/tty.js"

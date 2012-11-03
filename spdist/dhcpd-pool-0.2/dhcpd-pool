@@ -68,8 +68,11 @@ GetOptions ( "c|config=s"     => \$opt{'config'},
 	     "cache-period=i" => \$opt{'cache_period'}
 	   ) or exit 1;
 
-#my $cache_dir  = '/tmp/dhcpd-pool'; # handy for debugging
-my $cache_dir  = '/var/cache/dhcpd-pool';
+my $cache_dir  = '/tmp/dhcpd-pool'; # handy for debugging
+
+# It's better if we let the cache live in /tmp so that it will be gone after a reboot
+# For some reason, the cache can corrupt.
+# my $cache_dir  = '/var/cache/dhcpd-pool';
 my $cache_file = $cache_dir . '/cache.db';
 
 
