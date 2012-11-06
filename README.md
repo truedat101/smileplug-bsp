@@ -36,12 +36,11 @@ General Config
 Open Ports
 ==========
 * 80 (SMILE and JS.js) - We really need to put all of this behind a reverse proxy
-* 8009 (Gateone on https)
 * 8008 (TTY.js)
 * 8085 (forever-webui)
-* 9013 (NIDE)
+* 9023 (NIDE)
 * 9080 (plugmin WS/Web UI)
-* 5000 (epochedu) 
+* 5000 (epochedu)
 
 Python Modules:
 * curl -O http://python-distribute.org/distribute_setup.py
