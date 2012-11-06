@@ -12,6 +12,9 @@ case "$1" in
         iwpriv wdev0 autochannel 0
         iwpriv wdev0 wmm 1
         iwpriv wdev0 htbw 0
+        # Default to 3 antenna config
+        iwpriv wdev0 rxantenna 3
+        iwpriv wdev0 txantenna 3
         iwconfig wdev0 channel 6
         ifconfig wdev0 up
         
