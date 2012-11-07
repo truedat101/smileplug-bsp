@@ -2,4 +2,4 @@
 # Set ARGS to point to your initial Node.js app/service
 #
 ARGS="/root/smileplug-server/smileplug.js"
-DAEMON="/usr/bin/node"
+DAEMON="/usr/bin/forever"

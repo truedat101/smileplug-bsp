@@ -1,0 +1,3 @@
+[submodule "spdist/tty.js"]
+	path = spdist/tty.js
+	url = git://github.com/chjj/tty.js.git
