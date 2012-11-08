@@ -1,6 +1,7 @@
 #!/bin/sh
-version=0.0.3
-spdir="$HOME/.smileplug"
+version=0.0.5
+# Use /tmp so that we can be sure that this is blown away between reboots
+spdir="/tmp/.smileplug"
 spvdir="$spdir/$version"
 spvupscript="$spvdir/update-smileplug.sh"
 
@@ -30,7 +31,6 @@ if [ -d "$spvdir" ]; then
 	else
 		echo Nothing to update
 		echo If you feel you would like to update, delete $spvupscript 
-		rm $spvupscript
 	fi
 else
 	echo SMILE Plug version $verson does not exist, update with current version
