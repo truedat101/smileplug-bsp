@@ -1,5 +1,5 @@
 #!/bin/sh
-version=0.0.5
+version=0.0.6
 # Use /tmp so that we can be sure that this is blown away between reboots
 spdir="/tmp/.smileplug"
 spvdir="$spdir/$version"
@@ -21,7 +21,7 @@ else
 fi
 
 if [ -d "$spvdir" ]; then
-	if [ ! -d "$spvupscript" ]; then
+	if [ ! -f "$spvupscript" ]; then
 		echo SMILE Plug version $version installed, attempt update of newer version
 		# 
 		# Don't EVER CHANGE THIS URL
