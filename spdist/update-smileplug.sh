@@ -1,5 +1,5 @@
 #!/bin/sh
-version=0.0.6
+version=0.0.5
 # Use /tmp so that we can be sure that this is blown away between reboots
 spdir="/tmp/.smileplug"
 spvdir="$spdir/$version"
